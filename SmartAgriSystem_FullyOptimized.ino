@@ -460,25 +460,46 @@ private:
    Serial.println("多实例农业系统就绪。命令：C=创建，D<idx>=删除，X<idx>=切换，其他为原命令");
  }
  
- void loop() {
-   if (currentSystemIndex >= 0 && systems[currentSystemIndex]) {
-     systems[currentSystemIndex]->update();
-   }
  
-   if (Serial.available()) {
-     char cmd = Serial.read();
-     if (cmd == 'C') {
-       createSystem();
-     } else if (cmd == 'D') {
-       while (!Serial.available());
-       int i = Serial.parseInt();
-       deleteSystem(i);
-     } else if (cmd == 'X') {
-       while (!Serial.available());
-       int i = Serial.parseInt();
-       switchSystem(i);
-     } else if (currentSystemIndex >= 0 && systems[currentSystemIndex]) {
-       systems[currentSystemIndex]->handleCommand(cmd);
-     }
-   }
- }
+
+// 连接MQTT服务器
+void reconnect_mqtt() {
+  while (!client.connected()) {
+    if (client.connect(mqtt_client_id, mqtt_username, mqtt_password)) {
+      // 成功连接
+    } else {
+      delay(5000);
+    }
+  }
+}
+
+// 上传数据到OneNet
+void uploadToOneNet(float temperature, float humidity, float soilMoisture) {
+  if (!client.connected()) {
+    reconnect_mqtt();
+  }
+  client.loop();
+
+  String payload = String("{") +
+                   "\"datastreams\":[{" +
+                   "\"id\":\"temperature\",\"datapoints\":[{\"value\":" + temperature + "}]}," +
+                   "{\"id\":\"humidity\",\"datapoints\":[{\"value\":" + humidity + "}]}," +
+                   "{\"id\":\"soil\",\"datapoints\":[{\"value\":" + soilMoisture + "}]}]}";
+  String topic = String("$dp");
+
+  client.publish(topic.c_str(), payload.c_str());
+}
+
+
+
+void loop() {
+  system.update();
+
+  float temp = system.getTemperature();    // 获取温度
+  float hum = system.getHumidity();        // 获取湿度
+  float soil = system.getSoilMoisture();   // 获取土壤湿度
+
+  uploadToOneNet(temp, hum, soil);         // 上传数据到 OneNet
+
+  delay(60000); // 每分钟上传一次
+}
