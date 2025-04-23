@@ -495,6 +495,22 @@ void uploadToOneNet(float temperature, float humidity, float soilMoisture) {
 void loop() {
   system.update();
 
+  float temp = system.getTemperature();
+  float hum = system.getHumidity();
+  float soil = system.getSoilMoisture();
+
+  // 自动控制继电器（本地阈值逻辑）
+  if (soil < soilThreshold && !relayState) {
+    relayState = true;
+    digitalWrite(RELAY_PIN, HIGH);
+  } else if (soil >= soilThreshold && relayState) {
+    relayState = false;
+    digitalWrite(RELAY_PIN, LOW);
+  }
+
+  uploadToOneNet(temp, hum, soil);
+
+
   float temp = system.getTemperature();    // 获取温度
   float hum = system.getHumidity();        // 获取湿度
   float soil = system.getSoilMoisture();   // 获取土壤湿度
@@ -502,4 +518,28 @@ void loop() {
   uploadToOneNet(temp, hum, soil);         // 上传数据到 OneNet
 
   delay(60000); // 每分钟上传一次
+}
+
+
+
+#include <ArduinoJson.h>
+
+float soilThreshold = 30.0;  // 初始湿度阈值，可远程更改
+bool relayState = false;     // 当前继电器状态
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  StaticJsonDocument<256> doc;
+  DeserializationError error = deserializeJson(doc, payload, length);
+  if (error) {
+    return;
+  }
+
+  if (doc.containsKey("relay")) {
+    relayState = doc["relay"];
+    digitalWrite(RELAY_PIN, relayState ? HIGH : LOW);
+  }
+
+  if (doc.containsKey("threshold")) {
+    soilThreshold = doc["threshold"];
+  }
 }
