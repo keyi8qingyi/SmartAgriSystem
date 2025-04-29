@@ -191,20 +191,27 @@ void SmartAgricultureSystem::handleCommand(char cmd) {
 
 // ===== 手动湿度检测与水泵启动 =====
 void SmartAgricultureSystem::manualMoistureCheck() {
-  unsigned long currentMillis = millis();
+  unsigned long currentMillis = millis();// 获取当前时间
+
+  // 检查手动湿度检测的冷却时间是否已经过去
   if (currentMillis - state.lastManualCheck < params.manualCooldown) {
+  	// 如果冷却时间未结束，打印提示信息并返回
     Serial.println("[Manual] Cooldown, please wait");
     return;
   }
-  state.lastManualCheck = currentMillis;
-  updateSensors();  // 重新采集一次数据
+  
+  state.lastManualCheck = currentMillis;// 更新最后一次手动检测的时间
+  updateSensors();  // 重新更新一次传感器数据（读取最新的湿度值）
 
+  // 判断土壤湿度是否低于设定的阈值
   if (sensor.soilMoisture < params.moistureThreshold) {
+   	// 如果土壤湿度低于阈值，启动水泵
     Serial.println("[Manual] Soil dry, activating pump");
-    startPump();
-    state.manualPumpActive = true;
-    timers.pumpStartTime = currentMillis;
+    startPump(); // 启动水泵
+    state.manualPumpActive = true;// 标记手动水泵已激活
+    timers.pumpStartTime = currentMillis;// 记录水泵启动时间
   } else {
+  	// 如果土壤湿度足够，打印湿度状态
     Serial.println("[Manual] Soil moisture OK");
   }
 }
