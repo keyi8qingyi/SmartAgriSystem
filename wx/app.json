@@ -1,0 +1,10 @@
+{
+  "pages": [
+    "pages/index/index",       
+    "pages/control/control",   
+    "pages/settings/settings"  
+  ],
+  "window": {
+    "navigationBarTitleText": "智能植物养护系统"
+  }
+}

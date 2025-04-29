@@ -1,0 +1,15 @@
+/**app.wxss**/
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+  
+} 
+/* 状态颜色 */
+.safe { background-color: #66BB6A; }  /* 绿色 */
+.warning { background-color: #FFA726; }  /* 橙色 */
+.danger { background-color: #EF5350; }  /* 红色 */
