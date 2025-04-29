@@ -1,0 +1,7 @@
+.container {
+  padding: 20rpx;
+}
+
+.chart-container {
+  height: 500rpx;
+}

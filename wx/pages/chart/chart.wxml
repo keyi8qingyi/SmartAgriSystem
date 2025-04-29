@@ -1,0 +1,9 @@
+<view class="container">
+  <view class="chart-container">
+    <!-- 确保这里的 id 和 js 中的 selectComponent 参数一致 -->
+    <ec-canvas id="mychart" canvas-id="mychart" ec="{{ ec }}"></ec-canvas>
+  </view>
+
+  <!-- 返回首页按钮 -->
+  <button class="btn" bindtap="goToHome">返回首页</button>
+</view>
