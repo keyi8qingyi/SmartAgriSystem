@@ -1,0 +1,21 @@
+<view class="container">
+  <view class="control-section">
+    <text class="title">灌溉控制</text>
+    <button class="btn" bindtap="toggleIrrigation">{{irrigationStatus ? '停止灌溉' : '启动灌溉'}}</button>
+  </view>
+
+  <view class="threshold-section">
+    <text class="title">土壤湿度阈值</text>
+    <slider min="0" max="100" step="1" show-value bindchange="updateThreshold" value="{{threshold}}"/>
+    <text>当前土壤湿度阈值：{{threshold}} %</text>
+  </view>
+
+  <view class="threshold-section">
+    <text class="title">光照阈值</text>
+    <slider min="0" max="1000" step="1" show-value bindchange="updateLightThreshold" value="{{lightThreshold}}"/>
+    <text>当前光照阈值：{{lightThreshold}} lux</text>
+  </view>
+
+  <!-- 返回首页按钮 -->
+  <button class="btn" bindtap="goToHome">返回首页</button>
+</view>

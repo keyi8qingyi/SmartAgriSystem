@@ -1,0 +1,30 @@
+.container {
+  padding: 20rpx;
+}
+
+.control-section, .threshold-section {
+  margin-top: 40rpx;
+  padding: 30rpx;
+  background: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.btn {
+  width: 100%;
+  padding: 20rpx;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 10rpx;
+  font-size: 30rpx;
+}
+
+.slider {
+  width: 100%;
+}
