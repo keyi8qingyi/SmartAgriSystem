@@ -131,35 +131,44 @@ void SmartAgricultureSystem::controlLight() {
 
 // ===== 湿度自动控制 =====
 void SmartAgricultureSystem::controlMoisture() {
+  // 如果当前是手动控制模式，或者是手动触发的水泵操作，则跳过自动控制
   if (!state.autoControl || state.manualOverride || state.manualPumpActive) return;
+
+  // 如果水泵已经在运行，且水泵的运行时间已超过设定的持续时间，则停止水泵
   if (state.pumpRunning) return;
 
-  unsigned long currentMillis = millis();
+  unsigned long currentMillis = millis();// 获取当前的时间（毫秒）
+
+  // 检查是否已经到了湿度检测的时间间隔
   if (currentMillis - timers.lastMoistureCheck >= params.moistureInterval) {
-    timers.lastMoistureCheck = currentMillis;
+    timers.lastMoistureCheck = currentMillis;// 更新最后一次检测的时间
+
+    // 如果土壤湿度低于设定的阈值，则启动水泵
     if (sensor.soilMoisture < params.moistureThreshold) {
-      startPump();
+      startPump();// 启动水泵
     }
   }
+
+  // 如果水泵正在运行，并且已超过设定的水泵运行时长，则停止水泵
   if (state.pumpRunning && (currentMillis - timers.pumpStartTime >= params.pumpDuration)) {
-    stopPump();
+    stopPump();// 停止水泵
   }
 }
 
 // ===== 启动水泵 =====
 void SmartAgricultureSystem::startPump() {
-  digitalWrite(pins.relay, HIGH);
-  state.pumpRunning = true;
-  timers.pumpStartTime = millis();
-  Serial.println("[Pump] ON");
+  digitalWrite(pins.relay, HIGH);	// 设置继电器引脚为高电平，启动水泵
+  state.pumpRunning = true;			// 标记水泵正在运行
+  timers.pumpStartTime = millis();	// 记录水泵启动的时间
+  Serial.println("[Pump] ON"); 		// 打印水泵启动日志
 }
 
 // ===== 停止水泵 =====
 void SmartAgricultureSystem::stopPump() {
-  digitalWrite(pins.relay, LOW);
-  state.pumpRunning = false;
-  state.manualPumpActive = false;
-  Serial.println("[Pump] OFF");
+  digitalWrite(pins.relay, LOW);	// 设置继电器引脚为低电平，停止水泵
+  state.pumpRunning = false;		// 标记水泵已停止
+  state.manualPumpActive = false;	// 重置手动控制标志
+  Serial.println("[Pump] OFF");		// 打印水泵停止日志
 }
 
 // ===== 串口命令处理 =====
