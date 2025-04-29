@@ -1,0 +1,29 @@
+.container {
+  padding: 20rpx;
+}
+
+.setting-item {
+  margin-top: 30rpx;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.input {
+  width: 100%;
+  padding: 10rpx;
+  margin-top: 10rpx;
+  border: 1rpx solid #ccc;
+  border-radius: 5rpx;
+}
+
+.btn {
+  margin-top: 40rpx;
+  width: 100%;
+  padding: 20rpx;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 10rpx;
+  font-size: 30rpx;
+}

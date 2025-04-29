@@ -1,0 +1,14 @@
+<view class="container">
+  <view class="setting-item">
+    <text class="label">API Key：</text>
+    <input class="input" placeholder="请输入API Key" bindinput="onApiKeyInput"/>
+  </view>
+  <view class="setting-item">
+    <text class="label">设备ID：</text>
+    <input class="input" placeholder="请输入设备ID" bindinput="onDeviceIdInput"/>
+  </view>
+  <button class="btn" bindtap="saveSettings">保存设置</button>
+
+  <!-- 返回首页按钮 -->
+  <button class="btn" bindtap="goToHome">返回首页</button>
+</view>
