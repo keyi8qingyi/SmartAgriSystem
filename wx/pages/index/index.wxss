@@ -1,0 +1,30 @@
+.container {
+  padding: 20rpx;
+}
+
+.status-card {
+  background: #ffffff;
+  padding: 30rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+  margin-top: 40rpx;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.status-item {
+  margin: 20rpx 0;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.value {
+  font-size: 28rpx;
+  color: #333;
+}

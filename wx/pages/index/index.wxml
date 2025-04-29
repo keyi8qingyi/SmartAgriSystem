@@ -1,0 +1,29 @@
+<view class="container">
+  <view class="status-card">
+    <text class="title">🌿 当前植物状态</text>
+    <view class="status-item">
+      <text class="label">🌡️ 温度：</text>
+      <text class="value">{{temperature}} ℃</text>
+    </view>
+    <view class="status-item">
+      <text class="label">💧 湿度：</text>
+      <text class="value">{{humidity}} %</text>
+    </view>
+    <view class="status-item">
+      <text class="label">☀️ 光照：</text>
+      <text class="value">{{light}} lux</text>
+    </view>
+    <view class="status-item">
+      <text class="label">🌱 土壤湿度：</text>
+      <text class="value">{{soil}} %</text>
+    </view>
+    <view class="status-item">
+      <text class="label">📡 设备状态：</text>
+      <text class="value" style="color: {{online ? 'green' : 'red'}}">{{online ? '在线' : '离线'}}</text>
+    </view>
+    <!-- 跳转到控制页面 -->
+     <button class="btn" bindtap="goToControl">进入控制</button>
+    <!-- 跳转到设置页面 -->
+    <button class="btn" bindtap="goToSettings">设备设置</button>
+  </view>
+</view>
