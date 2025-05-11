@@ -7,6 +7,7 @@
 #include <PubSubClient.h>
 #include "SmartAgricultureSystem.h"
 #include <ArduinoJson.h>
+#include <WiFiClientSecure.h>
 
 /*** 配置参数 ***/
 #define MAX_SYSTEMS 3       // 最大同时运行的实例数量
@@ -15,11 +16,11 @@
 /*** WiFi与MQTT配置（需要根据你的实际账号修改） ***/
 const char* wifiSSID = "aaa";
 const char* wifiPassword = "ABCabc888";
-const char* mqttServer = "mqtt.heclouds.com";
+const char* mqttServer = "mqtts.heclouds.com";
 const int mqttPort = 1883;
-const char* mqttClientID = "esp32_plant01";    // 修改为你自己的OneNet Client ID
+const char* mqttClientID = "plant_01";    // 修改为你自己的OneNet Client ID
 const char* mqttUsername = "Pnr52oo7kr";   // 修改为你自己的OneNet Product ID
-const char* mqttPassword = "UGNVZjFSazVNZVNDMzF1empQTnBnNFVlUklPdTdjRGY=";      // 修改为你自己的OneNet APIKey
+const char* mqttPassword = "version=2018-10-31&res=products%2FPnr52oo7kr%2Fdevices%2Fplant_01&et=20000000000&method=md5&sign=t7gxqfJo3XPzHyja%2FjSwXA%3D%3D";      // 修改为你自己的OneNet APIKey
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
@@ -138,6 +139,14 @@ void setup() {
 
   mqttClient.setServer(mqttServer, mqttPort);
   mqttClient.setCallback(mqttCallback);
+
+  Serial.println("[MQTT] Attempting initial connection...");
+  if (mqttClient.connect(mqttClientID, mqttUsername, mqttPassword)) {
+    Serial.println("[MQTT] Initial connect success!");
+  } else {
+    Serial.print("[MQTT] Initial connect failed. State: ");
+    Serial.println(mqttClient.state());  // 打印错误码
+  }
 
   Serial.println("[System] Ready. Commands: C=Create, D<n>=Delete, X<n>=Switch");
 }
